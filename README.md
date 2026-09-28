@@ -17,7 +17,7 @@ npm install
 Create `.env`:
 
 ```env
-API_URL=http://localhost:4000/api
+VITE_API_URL=http://localhost:4007/api
 VITE_SOCKET_URL=http://localhost:4000
 ```
 

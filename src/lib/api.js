@@ -1,4 +1,8 @@
-const API_URL = (import.meta.env.API_URL || "http://localhost:4000/api").replace(/\/$/, "");
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:4007")
+  .replace(/\/+$/, "");
+const API_URL = /\/api$/i.test(API_BASE_URL)
+  ? API_BASE_URL
+  : `${API_BASE_URL}/api`;
 
 let accessToken = null;
 let refreshPromise = null;
