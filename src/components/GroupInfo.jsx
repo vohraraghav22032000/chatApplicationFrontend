@@ -8,12 +8,24 @@ export default function GroupInfo({ conversation, currentUser, onClose, onChange
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [busy, setBusy] = useState(false);
-  const role = conversation.currentRole;
+  // The conversation list returns the signed-in user's role as `role`;
+  // the detail endpoint returns it as `currentRole`.
+  const role = conversation.currentRole || conversation.role;
   const canManage = role === "OWNER" || role === "ADMIN";
 
   useEffect(() => {
     setMembers(conversation.members || []);
   }, [conversation]);
+
+  useEffect(() => {
+    let active = true;
+    conversationsApi.get(conversation.id)
+      .then((data) => {
+        if (active) setMembers(data.conversation.members || []);
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, [conversation.id]);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
